@@ -8,6 +8,8 @@ let isDecimaling = false;
 
 let operationString = document.querySelector('.operation-string');
 let valueString = document.querySelector('.value-string');
+let historyWrapper = document.querySelector('.history-list-wrapper');
+let historyList = document.querySelector('.history-list');
 
 let currentValue;
 let storedValue;
@@ -35,6 +37,8 @@ let posnegBtn = document.querySelector('.pos-neg');
 posnegBtn.addEventListener('click', invert);
 let decimalBtn = document.querySelector('.decimal');
 decimalBtn.addEventListener('click', addDecimal);
+let historyBtn = document.querySelector('.history-icon');
+historyBtn.addEventListener('click', () => historyWrapper.classList.toggle('show'));
 
 function resetOperatorFlags() {
     isAdding = false;
@@ -154,6 +158,7 @@ function equals() {
         return;
     }
     storedValue = operate();
+    addHistory();
     operationString.textContent = '';
     updateValueString();
     currentValue = undefined;
@@ -255,4 +260,53 @@ function logFlags() {
         isEqualing: isEqualing,
         isDecimaling: isDecimaling,
     });
+}
+
+// History code
+let historyMap = new Map();
+
+function HistoryObject(opString, valString, currVal, storedVal) {
+    this.opString = opString;
+    this.valString = valString;
+    this.storedVal = storedValue;
+    this.getOperation = () => `${opString} ${valString} =`;
+}
+
+function createHistoryDiv(histObj) {
+    let historyDiv = document.createElement('div');
+    historyDiv.className = 'history-item';
+    let opDiv = document.createElement('div');
+    opDiv.textContent = histObj.getOperation();
+    opDiv.className = 'history-operation';
+    let valDiv = document.createElement('div');
+    valDiv.textContent = histObj.storedVal;
+    valDiv.className = 'history-value'
+    historyDiv.appendChild(opDiv);
+    historyDiv.appendChild(valDiv);
+    return historyDiv;
+}
+
+function addHistory() {
+    let histObj = new HistoryObject(operationString.textContent, valueString.textContent, currentValue, storedValue);
+    let historyDiv = createHistoryDiv(histObj);
+    historyDiv.addEventListener('click', handleClick);
+    historyMap.set(historyDiv, histObj);
+    let firstChild = historyList.firstChild;
+    historyList.insertBefore(historyDiv, firstChild);
+}
+
+function handleClick(event) {
+    loadHistory(this);
+    historyWrapper.classList.toggle('show');
+}
+
+
+function loadHistory(listItem) {
+    let histObj = historyMap.get(listItem);
+    operationString.textContent = histObj.getOperation();
+    valueString.textContent = histObj.storedVal;
+    currentValue = undefined;
+    storedValue = histObj.storedVal;
+    resetOperatorFlags();
+    isEqualing = true;
 }
