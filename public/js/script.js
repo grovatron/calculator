@@ -5,6 +5,7 @@ let isDividing = false;
 let isOperating = false;
 let isEqualing = false;
 let isDecimaling = false;
+let isHistorying = false;
 
 let operationString = document.querySelector('.operation-string');
 let valueString = document.querySelector('.value-string');
@@ -47,6 +48,7 @@ function resetOperatorFlags() {
     isMultiplying = false;
     isOperating = false;
     isEqualing = false;
+    isHistorying = false;
 }
 
 function plus() { 
@@ -126,9 +128,14 @@ function updateOperationString(symbol) {
         return;
     }
 
+    console.log('inside updateOperationString()');
+    logValues();
+    logFlags();
     if(isEqualing) {
         operationString.textContent = storedValue.toString() + ` ${symbol} `;
-    } else {
+    } else if (isHistorying) {
+        operationString.textContent = currentValue.toString() + ` ${symbol} `;
+    } else if (currentValue !== undefined) {
         operationString.textContent += currentValue.toString() + ` ${symbol} `;
     }
 }
@@ -142,7 +149,9 @@ function handleOperation(symbol) {
     } else if (!isEqualing && currentValue !== undefined) {
         storedValue = currentValue;
         currentValue = undefined;
-    } 
+    } else if (!isEqualing && currentValue === undefined) {
+        return;
+    }
     resetOperatorFlags();
     isOperating = true;
 }
@@ -154,7 +163,7 @@ function updateValueString() {
 
 function equals() {
     console.log('equal pressed');
-    if (!isOperating) {
+    if (!isOperating || (isOperating && currentValue === undefined)) {
         return;
     }
     storedValue = operate();
@@ -259,6 +268,7 @@ function logFlags() {
         isOperating: isOperating,
         isEqualing: isEqualing,
         isDecimaling: isDecimaling,
+        isHistorying: isHistorying,
     });
 }
 
@@ -309,4 +319,8 @@ function loadHistory(listItem) {
     storedValue = histObj.storedVal;
     resetOperatorFlags();
     isEqualing = true;
+    isHistorying = true;
+    console.log('history loaded');
+    logValues();
+    logFlags();
 }
