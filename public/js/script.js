@@ -206,14 +206,14 @@ function addDecimal() {
 
 function clear() {
     operationString.textContent = '';
-    valueString.textContent = 0;
+    valueString.textContent = '';
     currentValue = undefined;
     storedValue = undefined;
     resetOperatorFlags();
 }
 
 function clearEntry() {
-    valueString.textContent = 0;
+    valueString.textContent = '';
     currentValue = undefined;
 }
 
