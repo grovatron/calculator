@@ -105,6 +105,12 @@ function updateCurrentValue(event) {
     }
     valueString.textContent = currentValue.toString().substring(0, 16);
 */
+    if (isHistorying || isEqualing) {
+	isEqualing = false;
+	isHistorying = false;
+	operationString.textContent = '';
+    }
+
     if (currentValue === undefined || currentValue === '0') {
 	currentValue = this.textContent;
     } else {
