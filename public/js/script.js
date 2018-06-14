@@ -117,14 +117,15 @@ function updateCurrentValue(event) {
 
 function operate() {
     console.log('operating');
+    let currentValueNumber = parseFloat(currentValue);
     if (isAdding) {
-        return add(storedValue, currentValue);
+        return add(storedValue, currentValueNumber);
     } else if (isSubtracting) {
-        return subtract(storedValue, currentValue);
+        return subtract(storedValue, currentValueNumber);
     } else if (isMultiplying) {
-        return multiply(storedValue, currentValue);
+        return multiply(storedValue, currentValueNumber);
     } else if (isDividing) {
-        return divide(storedValue, currentValue);
+        return divide(storedValue, currentValueNumber);
     }
 }
 
@@ -154,7 +155,7 @@ function handleOperation(symbol) {
         updateValueString();
         currentValue = undefined;
     } else if (!isEqualing && currentValue !== undefined) {
-        storedValue = currentValue;
+        storedValue = parseFloat(currentValue);
         currentValue = undefined;
     } else if (!isEqualing && currentValue === undefined) {
         return;
