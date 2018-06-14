@@ -164,6 +164,7 @@ function handleOperation(symbol) {
         storedValue = parseFloat(currentValue);
         currentValue = undefined;
     } else if (!isEqualing && currentValue === undefined) {
+	resetOperatorFlags();
         return;
     }
     resetOperatorFlags();
