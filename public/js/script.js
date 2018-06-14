@@ -222,7 +222,7 @@ function backspace() {
     if (currentValue === undefined) {
         return;
     }
-    
+/*    
     let currentValueString = valueString.textContent;
     if (currentValueString.length === 1) {
         currentValue = undefined;
@@ -234,6 +234,19 @@ function backspace() {
         valueString.textContent = 0;
     } else {
         valueString.textContent = currentValue;
+    }
+*/
+    let deletedChar = currentValue.slice(-1);
+    if (deletedChar === '.') {
+	isDecimaling = false;
+    }
+
+    if (currentValue.length === 1) {
+	currentValue = undefined;
+	valueString.textContent = '';
+    } else {
+	currentValue = currentValue.substring(0, currentValue.length - 1);
+	valueString.textContent = currentValue;
     }
     logValues();
     logFlags();
