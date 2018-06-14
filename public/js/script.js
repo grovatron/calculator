@@ -83,7 +83,7 @@ function div() {
 }
 
 function updateCurrentValue(event) {
-    console.log('number pressed');
+/*    console.log('number pressed');
     if (isEqualing) {
         isEqualing = false;
     }
@@ -104,6 +104,13 @@ function updateCurrentValue(event) {
         currentValue = parseFloat(newValue);
     }
     valueString.textContent = currentValue.toString().substring(0, 16);
+*/
+    if (currentValue === undefined || currentValue === '0') {
+	currentValue = this.textContent;
+    } else {
+	currentValue += this.textContent;
+    }
+    valueString.textContent = currentValue.substring(0, 16);
     logValues();
     logFlags();
 }
