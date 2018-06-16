@@ -89,28 +89,7 @@ function handleNumber(event) {
 }
 
 function updateCurrentValue(number) {
-/*    console.log('number pressed');
-    if (isEqualing) {
-        isEqualing = false;
-    }
-
-    if (valueString.textContent.length >= 16 && !isOperating) {
-        console.log('exceeding digit space');
-        return;
-    }
-
-    if (currentValue === undefined) {
-        currentValue = parseFloat(this.textContent);
-    } else if (isDecimaling && decimalString.length > 0) {
-        let newValue = decimalString + this.textContent;
-        currentValue = parseFloat(newValue);
-        decimalString = '';
-    } else {
-        let newValue = currentValue.toString() + this.textContent;
-        currentValue = parseFloat(newValue);
-    }
-    valueString.textContent = currentValue.toString().substring(0, 16);
-*/
+    console.log('number pressed');
     if (isEqualing) {
 	isEqualing = false;
 	operationString.textContent = '';
@@ -241,20 +220,6 @@ function backspace() {
     if (currentValue === undefined) {
         return;
     }
-/*    
-    let currentValueString = valueString.textContent;
-    if (currentValueString.length === 1) {
-        currentValue = undefined;
-    } else {
-        let backspacedValue = currentValueString.substring(0, currentValueString.length - 1);
-        currentValue = parseFloat(backspacedValue);
-    }
-    if (currentValue === undefined) {
-        valueString.textContent = 0;
-    } else {
-        valueString.textContent = currentValue;
-    }
-*/
     let deletedChar = currentValue.slice(-1);
     if (deletedChar === '.') {
 	isDecimaling = false;
@@ -307,6 +272,7 @@ function logFlags() {
         isOperating: isOperating,
         isEqualing: isEqualing,
         isDecimaling: isDecimaling,
+	isNegative: isNegative,
     });
 }
 
