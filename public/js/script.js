@@ -5,7 +5,6 @@ let isDividing = false;
 let isOperating = false;
 let isEqualing = false;
 let isDecimaling = false;
-let isHistorying = false;
 
 let operationString = document.querySelector('.operation-string');
 let valueString = document.querySelector('.value-string');
@@ -17,7 +16,7 @@ let storedValue;
 let decimalString;
 
 let numBtns = document.querySelectorAll('.number');
-numBtns.forEach(btn=>btn.addEventListener('click', updateCurrentValue));
+numBtns.forEach(btn=>btn.addEventListener('click', handleNumber));
 let equalsBtn = document.querySelector('.equals');
 equalsBtn.addEventListener('click', equals);
 let plusBtn = document.querySelector('.plus');
@@ -48,7 +47,7 @@ function resetOperatorFlags() {
     isMultiplying = false;
     isOperating = false;
     isEqualing = false;
-    isHistorying = false;
+    isDecimaling = false;
 }
 
 function plus() { 
@@ -82,7 +81,12 @@ function div() {
     logFlags();
 }
 
-function updateCurrentValue(event) {
+function handleNumber(event) {
+    let number = this.textContent;
+    updateCurrentValue(number);
+}
+
+function updateCurrentValue(number) {
 /*    console.log('number pressed');
     if (isEqualing) {
         isEqualing = false;
@@ -105,16 +109,15 @@ function updateCurrentValue(event) {
     }
     valueString.textContent = currentValue.toString().substring(0, 16);
 */
-    if (isHistorying || isEqualing) {
+    if (isEqualing) {
 	isEqualing = false;
-	isHistorying = false;
 	operationString.textContent = '';
     }
 
     if (currentValue === undefined || currentValue === '0') {
-	currentValue = this.textContent;
+	currentValue = number; 
     } else {
-	currentValue += this.textContent;
+	currentValue += number;
     }
     valueString.textContent = currentValue.substring(0, 16);
     logValues();
@@ -147,8 +150,6 @@ function updateOperationString(symbol) {
     logFlags();
     if(isEqualing) {
         operationString.textContent = storedValue.toString() + ` ${symbol} `;
-    } else if (isHistorying) {
-        operationString.textContent = currentValue.toString() + ` ${symbol} `;
     } else if (currentValue !== undefined) {
         operationString.textContent += currentValue.toString() + ` ${symbol} `;
     }
@@ -164,8 +165,7 @@ function handleOperation(symbol) {
         storedValue = parseFloat(currentValue);
         currentValue = undefined;
     } else if (!isEqualing && currentValue === undefined) {
-	resetOperatorFlags();
-        return;
+
     }
     resetOperatorFlags();
     isOperating = true;
@@ -201,15 +201,18 @@ function invert() {
 }
 
 function addDecimal() {
-/*    if (isDecimaling || isEqualing) {
+    if (isDecimaling || isEqualing) {
         return;
     }
     isDecimaling = true;
-    decimalString = currentValue + '.';
-    valueString.textContent = decimalString;
+    if (currentValue === undefined) {
+	currentValue = '0.';
+    } else {
+	currentValue += '.';
+    }
+    valueString.textContent = currentValue;
     logValues();
     logFlags();
-*/
 }
 
 function clear() {
@@ -296,7 +299,6 @@ function logFlags() {
         isOperating: isOperating,
         isEqualing: isEqualing,
         isDecimaling: isDecimaling,
-        isHistorying: isHistorying,
     });
 }
 
@@ -347,7 +349,6 @@ function loadHistory(listItem) {
     storedValue = histObj.storedVal;
     resetOperatorFlags();
     isEqualing = true;
-    isHistorying = true;
     console.log('history loaded');
     logValues();
     logFlags();
