@@ -121,3 +121,17 @@
 .history-value {
     font-size: 1.5em;
 }
+
+.key-info {
+    width: 750px;
+    text-align: center;
+    margin: 0 auto;
+    font-family: arial, sans-serif;
+}
+
+.key-info table {
+    width: 100%;
+    border-spacing: 40px;
+    background-color: #B6E7EF;
+    font-weight: bold;
+}
