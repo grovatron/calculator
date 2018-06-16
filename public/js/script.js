@@ -5,6 +5,7 @@ let isDividing = false;
 let isOperating = false;
 let isEqualing = false;
 let isDecimaling = false;
+let isNegative = false;
 
 let operationString = document.querySelector('.operation-string');
 let valueString = document.querySelector('.value-string');
@@ -48,6 +49,7 @@ function resetOperatorFlags() {
     isOperating = false;
     isEqualing = false;
     isDecimaling = false;
+    isNegative = false;
 }
 
 function plus() { 
@@ -196,7 +198,13 @@ function invert() {
     if (currentValue === undefined || isEqualing) {
         return;
     }
-    currentValue = -currentValue;
+    if (isNegative) {
+	currentValue = currentValue.substring(1);
+	isNegative = false;
+    } else {
+	currentValue = '-' + currentValue;
+	isNegative = true;
+    }
     valueString.textContent = currentValue;
 }
 
