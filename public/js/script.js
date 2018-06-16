@@ -342,13 +342,12 @@ operatorMap.set('Escape', clear);
 operatorMap.set('Delete', clearEntry);
 operatorMap.set('.', addDecimal);
 operatorMap.set('i', invert);
-const operatorArray = Array.from(operatorMap.keys());
 
 function handleKeyPress(event) {
     let key = event.key;
     if (digits.includes(key)) {
 	updateCurrentValue(key);
-    } else if (operatorArray.includes(key)) {
+    } else if (operatorMap.has(key)) {
 	operatorMap.get(key)();
     }
 }
