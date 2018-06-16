@@ -327,3 +327,30 @@ function loadHistory(listItem) {
     logValues();
     logFlags();
 }
+
+// Keyboard Support
+const digits = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9'];
+const operatorMap = new Map();
+operatorMap.set('/', div);
+operatorMap.set('*', mult);
+operatorMap.set('+', plus);
+operatorMap.set('-', minus);
+operatorMap.set('Enter', equals);
+operatorMap.set('=', equals);
+operatorMap.set('Backspace', backspace);
+operatorMap.set('Escape', clear);
+operatorMap.set('Delete', clearEntry);
+operatorMap.set('.', addDecimal);
+operatorMap.set('i', invert);
+const operatorArray = Array.from(operatorMap.keys());
+
+function handleKeyPress(event) {
+    let key = event.key;
+    if (digits.includes(key)) {
+	updateCurrentValue(key);
+    } else if (operatorArray.includes(key)) {
+	operatorMap.get(key)();
+    }
+}
+
+window.addEventListener('keydown', handleKeyPress);
